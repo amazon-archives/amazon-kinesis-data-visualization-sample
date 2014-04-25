@@ -1,0 +1,92 @@
+/*
+ * Copyright 2014 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ *  http://aws.amazon.com/apache2.0
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+#graph {
+  width: 850px;
+  height: 425px;
+  padding: 10px 5px 0 0;
+  margin: 15px auto 30px auto;
+  border: 1px solid #ddd;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  -o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  -ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.axisLabel {
+  position: absolute;
+  text-align: center;
+  font-size: 14px;
+}
+
+.yaxisLabel {
+  top: 50%;
+  left: 2px;
+  transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -webkit-transform:  rotate(-90deg);
+  transform-origin: 0 0;
+  -o-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  -moz-transform-origin: 0 0;
+  -webkit-transform-origin: 0 0;
+}
+
+.ie7 .yaxisLabel, .ie8 .yaxisLabel {
+  top: 40%;
+  font-size: 36px;
+  filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.0, M12=0.33, M21=-0.33, M22=0.0,sizingMethod='auto expand');
+}
+
+#description {
+  text-align: center;
+  font-size: 16px;
+  width: 100%;
+}
+
+#graph {
+  width: 1000px;
+  height: 500px;
+}
+
+#updatedBy {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: right;
+  font-size: 12px;
+  width: 1000px;
+}
+
+#topNContainer {
+  text-align: center;
+  font-size: 16px;
+}
+
+.topN {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.referrerColumn {
+  width: 250px;
+}
+
+.countColumn {
+  width: 40px;
+  text-align: right;
+}
