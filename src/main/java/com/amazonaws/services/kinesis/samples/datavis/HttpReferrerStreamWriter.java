@@ -34,6 +34,8 @@ import com.amazonaws.services.kinesis.samples.datavis.producer.HttpReferrerKines
 import com.amazonaws.services.kinesis.samples.datavis.producer.HttpReferrerPairFactory;
 import com.amazonaws.services.kinesis.samples.datavis.utils.SampleUtils;
 import com.amazonaws.services.kinesis.samples.datavis.utils.StreamUtils;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.RegionUtils;
 
 /**
  * A command-line tool that sends records to Kinesis on a given number of threads as fast as possible.
@@ -53,23 +55,26 @@ public class HttpReferrerStreamWriter {
      * Start a number of threads and send randomly generated {@link HttpReferrerPair}s to a Kinesis Stream until the
      * program is terminated.
      *
-     * @param args Expecting 2 arguments: A numeric value indicating the number of threads to use to send
-     *        data to Kinesis and the name of the stream to send records to.
+     * @param args Expecting 3 arguments: A numeric value indicating the number of threads to use to send
+     *        data to Kinesis and the name of the stream to send records to, and the AWS region in which these resources
+     *        exist or should be created.
      * @throws InterruptedException If this application is interrupted while sending records to Kinesis.
      */
     public static void main(String[] args) throws InterruptedException {
-        if (args.length != 2) {
+        if (args.length != 3) {
             System.err.println("Usage: " + HttpReferrerStreamWriter.class.getSimpleName()
-                    + " <number of threads> <stream name>");
+                    + " <number of threads> <stream name> <region>");
             System.exit(1);
         }
 
-        final int numberOfThreads = Integer.parseInt(args[0]);
+        int numberOfThreads = Integer.parseInt(args[0]);
         String streamName = args[1];
+        Region region = SampleUtils.parseRegion(args[2]);
 
         AWSCredentialsProvider credentialsProvider = new DefaultAWSCredentialsProviderChain();
         ClientConfiguration clientConfig = SampleUtils.configureUserAgentForSample(new ClientConfiguration());
         AmazonKinesis kinesis = new AmazonKinesisClient(credentialsProvider, clientConfig);
+        kinesis.setRegion(region);
 
         // The more resources we declare the higher write IOPS we need on our DynamoDB table.
         // We write a record for each resource every interval.

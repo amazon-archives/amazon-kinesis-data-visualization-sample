@@ -24,6 +24,8 @@ import org.apache.commons.logging.LogFactory;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.RegionUtils;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.kinesis.AmazonKinesis;
@@ -54,25 +56,29 @@ public class HttpReferrerCounterApplication {
 
     /**
      * Start the Kinesis Client application.
-     *
-     * @param args Expecting 3 arguments: Application name to use for the Kinesis Client Application, Stream name to
-     *        read from, and DynamoDB table name to persist counts into.
+     * 
+     * @param args Expecting 4 arguments: Application name to use for the Kinesis Client Application, Stream name to
+     *        read from, DynamoDB table name to persist counts into, and the AWS region in which these resources
+     *        exist or should be created.
      */
     public static void main(String[] args) throws UnknownHostException {
-        if (args.length != 3) {
+        if (args.length != 4) {
             System.err.println("Usage: " + HttpReferrerCounterApplication.class.getSimpleName()
-                    + " <application name> <stream name> <DynamoDB table name>");
+                    + " <application name> <stream name> <DynamoDB table name> <region>");
             System.exit(1);
         }
 
         String applicationName = args[0];
         String streamName = args[1];
         String countsTableName = args[2];
+        Region region = SampleUtils.parseRegion(args[3]);
 
         AWSCredentialsProvider credentialsProvider = new DefaultAWSCredentialsProviderChain();
         ClientConfiguration clientConfig = SampleUtils.configureUserAgentForSample(new ClientConfiguration());
         AmazonKinesis kinesis = new AmazonKinesisClient(credentialsProvider, clientConfig);
+        kinesis.setRegion(region);
         AmazonDynamoDB dynamoDB = new AmazonDynamoDBClient(credentialsProvider, clientConfig);
+        dynamoDB.setRegion(region);
 
         // Creates a stream to write to, if it doesn't exist
         StreamUtils streamUtils = new StreamUtils(kinesis);
@@ -88,6 +94,7 @@ public class HttpReferrerCounterApplication {
         KinesisClientLibConfiguration kclConfig =
                 new KinesisClientLibConfiguration(applicationName, streamName, credentialsProvider, workerId);
         kclConfig.withCommonClientConfig(clientConfig);
+        kclConfig.withRegionName(region.getName());
         kclConfig.withInitialPositionInStream(InitialPositionInStream.LATEST);
 
         // Persist counts to DynamoDB

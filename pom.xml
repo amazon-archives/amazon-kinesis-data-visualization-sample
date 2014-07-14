@@ -5,7 +5,7 @@
     <artifactId>amazon-kinesis-data-visualization-sample</artifactId>
     <packaging>jar</packaging>
     <name>Amazon Kinesis Data Visualization Sample Application</name>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <description>The Amazon Kinesis Data Visualization Sample
         Application how to interact with Amazon Kinesis to generating
         meaningful statistics across a time window.
@@ -29,8 +29,9 @@
         <sample-application.name>KinesisDataVisSample-HttpReferrerPairsCounter</sample-application.name>
         <sample-application.stream>KinesisDataVisSample-HttpReferrerPairs</sample-application.stream>
         <sample-application.counts-table>KinesisDataVisSample-HttpReferrerPairsCounter-Counts</sample-application.counts-table>
+        <sample-application.region>us-east-1</sample-application.region>
 
-        <amazon-kinesis-client.version>1.0.0</amazon-kinesis-client.version>
+        <amazon-kinesis-client.version>1.1.0</amazon-kinesis-client.version>
         <jetty.version>8.1.9.v20130131</jetty.version>
     </properties>
 
@@ -125,6 +126,7 @@
                                 <argument>${sample-application.name}</argument>
                                 <argument>${sample-application.stream}</argument>
                                 <argument>${sample-application.counts-table}</argument>
+                                <argument>${sample-application.region}</argument>
                             </arguments>
                         </configuration>
                     </plugin>
@@ -146,6 +148,7 @@
                                 <!-- Start a single thread to put records in to Amazon Kinesis -->
                                 <argument>1</argument>
                                 <argument>${sample-application.stream}</argument>
+                                <argument>${sample-application.region}</argument>
                             </arguments>
                         </configuration>
                     </plugin>
@@ -169,6 +172,7 @@
                                 <!-- Serve static resources from their root -->
                                 <argument>${project.basedir}/src/main/static-content/wwwroot</argument>
                                 <argument>${sample-application.counts-table}</argument>
+                                <argument>${sample-application.region}</argument>
                             </arguments>
                         </configuration>
                     </plugin>
@@ -190,6 +194,7 @@
                               <argument>${sample-application.name}</argument>
                               <argument>${sample-application.stream}</argument>
                               <argument>${sample-application.counts-table}</argument>
+			      <argument>${sample-application.region}</argument>
                             </arguments>
                         </configuration>
                     </plugin>

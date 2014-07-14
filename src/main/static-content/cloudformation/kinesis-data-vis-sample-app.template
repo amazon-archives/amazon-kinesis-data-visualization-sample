@@ -37,7 +37,7 @@
       "Type" : "String",
       "MinLength" : "7",
       "MaxLength" : "255",
-      "Default" : "https://github.com/awslabs/amazon-kinesis-data-visualization-sample/releases/download/v1.0.0/amazon-kinesis-data-visualization-sample-1.0.0-assembly.zip"
+      "Default" : "https://github.com/awslabs/amazon-kinesis-data-visualization-sample/releases/download/v1.1.0/amazon-kinesis-data-visualization-sample-1.1.0-assembly.zip"
     }
   },
 
@@ -179,15 +179,15 @@
              "Statement" : [ {
                 "Effect" : "Allow",
                 "Action" : "kinesis:*",
-                "Resource" : { "Fn::Join" : [ "", [ "arn:aws:kinesis:us-east-1:", { "Ref" : "AWS::AccountId" }, ":stream/", { "Ref" : "KinesisStream" } ]]}
+                "Resource" : { "Fn::Join" : [ "", [ "arn:aws:kinesis:", { "Ref" : "AWS::Region" }, ":", { "Ref" : "AWS::AccountId" }, ":stream/", { "Ref" : "KinesisStream" } ]]}
              }, {
                 "Effect" : "Allow",
                 "Action" : "dynamodb:*",
-                "Resource" : { "Fn::Join" : [ "", [ "arn:aws:dynamodb:us-east-1:", { "Ref" : "AWS::AccountId" }, ":table/", { "Ref" : "KCLDynamoDBTable" } ]]}
+                "Resource" : { "Fn::Join" : [ "", [ "arn:aws:dynamodb:", { "Ref" : "AWS::Region" }, ":", { "Ref" : "AWS::AccountId" }, ":table/", { "Ref" : "KCLDynamoDBTable" } ]]}
              }, {
                 "Effect" : "Allow",
                 "Action" : "dynamodb:*",
-                "Resource" : { "Fn::Join" : [ "", [ "arn:aws:dynamodb:us-east-1:", { "Ref" : "AWS::AccountId" }, ":table/", { "Ref" : "CountsDynamoDBTable" } ]]}
+                "Resource" : { "Fn::Join" : [ "", [ "arn:aws:dynamodb:", { "Ref" : "AWS::Region" }, ":", { "Ref" : "AWS::AccountId" }, ":table/", { "Ref" : "CountsDynamoDBTable" } ]]}
              }, {
                 "Effect" : "Allow",
                 "Action" : "cloudwatch:*",
@@ -222,16 +222,16 @@
                   "#!/bin/bash\n",
                   "if ! ps aux | grep HttpReferrerCounterApplication | grep -v grep ; then\n",
                   "    # Launch the Kinesis application for counting HTTP referrer pairs\n",
-                  "    java -cp /var/kinesis-data-vis-sample-app/lib/\\* com.amazonaws.services.kinesis.samples.datavis.HttpReferrerCounterApplication ", { "Ref" : "KCLDynamoDBTable" }, " ", { "Ref" : "KinesisStream" }, " ", { "Ref" : "CountsDynamoDBTable" }, " &>> /home/ec2-user/kinesis-data-vis-sample-app-kcl.log &\n",
+                  "    java -cp /var/kinesis-data-vis-sample-app/lib/\\* com.amazonaws.services.kinesis.samples.datavis.HttpReferrerCounterApplication ", { "Ref" : "KCLDynamoDBTable" }, " ", { "Ref" : "KinesisStream" }, " ", { "Ref" : "CountsDynamoDBTable" }, " ", { "Ref" : "AWS::Region" }, " &>> /home/ec2-user/kinesis-data-vis-sample-app-kcl.log &\n",
                   "fi\n",
                   "if ! ps aux | grep HttpReferrerStreamWriter | grep -v grep ; then\n",
                   "    # Launch our Kinesis stream writer to fill our stream with generated HTTP (resource, referrer) pairs.\n",
                   "    # This will create a writer with 5 threads to send records indefinitely.\n",
-                  "    java -cp /var/kinesis-data-vis-sample-app/lib/\\* com.amazonaws.services.kinesis.samples.datavis.HttpReferrerStreamWriter 5 ",  { "Ref" : "KinesisStream" }, " &>> /home/ec2-user/kinesis-data-vis-sample-app-publisher.log &\n",
+                  "    java -cp /var/kinesis-data-vis-sample-app/lib/\\* com.amazonaws.services.kinesis.samples.datavis.HttpReferrerStreamWriter 5 ",  { "Ref" : "KinesisStream" }, " ", { "Ref" : "AWS::Region" }, " &>> /home/ec2-user/kinesis-data-vis-sample-app-publisher.log &\n",
                   "fi\n",
                   "if ! ps aux | grep WebServer | grep -v grep ; then\n",
                   "    # Launch the webserver\n",
-                  "    java -cp /var/kinesis-data-vis-sample-app/lib/\\* com.amazonaws.services.kinesis.samples.datavis.WebServer 80 /var/kinesis-data-vis-sample-app/wwwroot ", { "Ref" : "CountsDynamoDBTable" }, " &>> /home/ec2-user/kinesis-data-vis-sample-app-www.log &\n",
+                  "    java -cp /var/kinesis-data-vis-sample-app/lib/\\* com.amazonaws.services.kinesis.samples.datavis.WebServer 80 /var/kinesis-data-vis-sample-app/wwwroot ", { "Ref" : "CountsDynamoDBTable" }, " ", { "Ref" : "AWS::Region" }, " &>> /home/ec2-user/kinesis-data-vis-sample-app-www.log &\n",
                   "fi\n"
                 ]]},
                 "mode" : "000755",

@@ -25,6 +25,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.RegionUtils;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.kinesis.samples.datavis.utils.DynamoDBUtils;
@@ -37,20 +39,22 @@ import com.amazonaws.services.kinesis.samples.datavis.webserver.GetCountsServlet
 public class WebServer {
     /**
      * Start an embedded web server.
-     *
-     * @param args Expecting 3 arguments: Port number, File path to static content, and the name of the
-     *        DynamoDB table where counts are persisted to.
+     * 
+     * @param args Expecting 4 arguments: Port number, File path to static content, the name of the
+     *        DynamoDB table where counts are persisted to, and the AWS region in which these resources
+     *        exist or should be created.
      * @throws Exception Error starting the web server.
      */
     public static void main(String[] args) throws Exception {
-        if (args.length != 3) {
+        if (args.length != 4) {
             System.err.println("Usage: " + WebServer.class
-                    + " <port number> <directory for static content> <DynamoDB table name>");
+                    + " <port number> <directory for static content> <DynamoDB table name> <region>");
             System.exit(1);
         }
         Server server = new Server(Integer.parseInt(args[0]));
         String wwwroot = args[1];
         String countsTableName = args[2];
+        Region region = SampleUtils.parseRegion(args[3]);
 
         // Servlet context
         ServletContextHandler context =
@@ -67,6 +71,7 @@ public class WebServer {
         AWSCredentialsProvider credentialsProvider = new DefaultAWSCredentialsProviderChain();
         ClientConfiguration clientConfig = SampleUtils.configureUserAgentForSample(new ClientConfiguration());
         AmazonDynamoDB dynamoDB = new AmazonDynamoDBClient(credentialsProvider, clientConfig);
+        dynamoDB.setRegion(region);
         DynamoDBUtils dynamoDBUtils = new DynamoDBUtils(dynamoDB);
         context.addServlet(new ServletHolder(new GetCountsServlet(dynamoDBUtils.createMapperForTable(countsTableName))),
                 "/GetCounts/*");

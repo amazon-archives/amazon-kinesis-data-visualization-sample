@@ -25,7 +25,6 @@ import java.util.Map;
  * represent a time period such as 1 second.
  */
 public class BucketBasedCounter<ObjectType> {
-    // TODO changes this to a Map<ObjectType, Map<Bucket, Count>> so we reduce memory usage for sparse counts.
     private Map<ObjectType, long[]> objectCounts;
     private int maxBuckets;
 
