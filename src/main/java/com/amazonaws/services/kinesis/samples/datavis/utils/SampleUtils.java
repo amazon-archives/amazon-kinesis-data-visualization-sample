@@ -37,7 +37,7 @@ public class SampleUtils {
         // Separate regions of the UserAgent with a space
         userAgent.append(" ");
         // Append the repository name followed by version number of the sample
-        userAgent.append("amazon-kinesis-data-visualization-sample/1.1.0");
+        userAgent.append("amazon-kinesis-data-visualization-sample/1.1.1");
 
         newConfig.setUserAgent(userAgent.toString());
 
