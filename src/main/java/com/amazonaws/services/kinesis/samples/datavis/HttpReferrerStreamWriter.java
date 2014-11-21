@@ -1,11 +1,11 @@
 /*
  * Copyright 2014 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
+ * Licensed under the Amazon Software License (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
- *  http://aws.amazon.com/apache2.0
+ * http://aws.amazon.com/asl/
  *
  * or in the "license" file accompanying this file. This file is distributed
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
@@ -27,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.regions.Region;
 import com.amazonaws.services.kinesis.AmazonKinesis;
 import com.amazonaws.services.kinesis.AmazonKinesisClient;
 import com.amazonaws.services.kinesis.samples.datavis.model.HttpReferrerPair;
@@ -34,11 +35,9 @@ import com.amazonaws.services.kinesis.samples.datavis.producer.HttpReferrerKines
 import com.amazonaws.services.kinesis.samples.datavis.producer.HttpReferrerPairFactory;
 import com.amazonaws.services.kinesis.samples.datavis.utils.SampleUtils;
 import com.amazonaws.services.kinesis.samples.datavis.utils.StreamUtils;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.RegionUtils;
 
 /**
- * A command-line tool that sends records to Kinesis on a given number of threads as fast as possible.
+ * A command-line tool that sends records to Kinesis.
  */
 public class HttpReferrerStreamWriter {
     private static final Log LOG = LogFactory.getLog(HttpReferrerStreamWriter.class);
