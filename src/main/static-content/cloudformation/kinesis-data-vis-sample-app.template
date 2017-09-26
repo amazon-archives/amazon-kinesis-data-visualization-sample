@@ -14,12 +14,7 @@
 
     "KeyName" : {
       "Description" : "(Optional) Name of an existing EC2 KeyPair to enable SSH access to the instance. If this is not provided you will not be able to SSH on to the EC2 instance.",
-      "Type" : "String",
-      "Default" : "",
-      "MinLength" : "0",
-      "MaxLength" : "255",
-      "AllowedPattern" : "[\\x20-\\x7E]*",
-      "ConstraintDescription" : "can contain only ASCII characters."
+      "Type" : "AWS::EC2::KeyPair::KeyName"
     },
 
     "SSHLocation" : {
