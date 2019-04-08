@@ -19,8 +19,8 @@
 
     <licenses>
         <license>
-            <name>Amazon Software License</name>
-            <url>https://aws.amazon.com/asl</url>
+            <name>MIT No Attribution License</name>
+            <url>https://raw.githubusercontent.com/aws/mit-0/master/MIT-0</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
